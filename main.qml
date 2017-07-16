@@ -119,6 +119,7 @@ ApplicationWindow {
             text: qsTr("Остановить трансляцию")
             onClicked: {
                 screenshot.setIsStopped(true);
+                screenshot.copyFilesToProperFolder();
             }
         }
 //        TabButton {

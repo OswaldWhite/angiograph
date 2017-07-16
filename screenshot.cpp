@@ -1,12 +1,15 @@
 #include "screenshot.h"
 #include <QDebug>
 #include <QTimer>
+#include <QDateTime>
+#include <QFile>
+#include <QDir>
 
 ScreenShot::ScreenShot()
 {
     m_source = "";
     m_isStopped = true;
-    m_counter = 0;
+    m_counter = 1;
 }
 
 void ScreenShot::startTranslation()
@@ -33,9 +36,42 @@ void ScreenShot::getBottomImage()
     QTimer::singleShot(500, this, &ScreenShot::getBottomImage);
 }
 
-void ScreenShot::copyFileToProperFolder() const
+void ScreenShot::copyFilesToProperFolder() const
 {
+    //May look for better recourcive way
+    QString filePathFrom = tr("D:/screenshot/");
+    QString filePathFolder = tr("D:/save/");
+    QDir dirFrom(filePathFrom);
+    QDir dirToFolder(filePathFolder);
 
+    if (!dirToFolder.exists()) {
+        QDir dir1("D:/");
+        dir1.mkdir("save");
+    }
+
+    QString newDir = tr("D:/save/%1").arg(QDate::currentDate().toString());
+    QDir dirTo(newDir);
+
+    //Make a way to save to folder of current time
+
+    if (!dirTo.exists()) {
+        QDir dir1("D:/save/");
+        dir1.mkdir(QDate::currentDate().toString());
+    }
+
+    dirFrom.setNameFilters(QStringList() << "*.*");
+    dirFrom.setFilter(QDir::Files);
+
+    foreach(QString dirFile, dirFrom.entryList())
+    {
+        QString newFilePath = newDir + "/" + dirFile;
+        QString oldFilePath = filePathFrom + dirFile;
+        if (QFile::copy(oldFilePath, newFilePath)) {
+            qDebug() << "Successful copy";
+        } else {
+            qDebug() << "Unsuccessful copy";
+        }
+    }
 }
 
 bool ScreenShot::isStopped() const
