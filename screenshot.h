@@ -18,7 +18,7 @@ public slots:
     Q_INVOKABLE void startTranslation();
     Q_INVOKABLE QString source();
     void getBottomImage() ;
-    void copyFileToProperFolder() const;
+    Q_INVOKABLE void copyFilesToProperFolder() const;
     bool isStopped() const;
     Q_INVOKABLE void setIsStopped(bool isStopped);
 
