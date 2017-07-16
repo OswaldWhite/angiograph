@@ -38,7 +38,6 @@ void ScreenShot::getBottomImage()
 
 void ScreenShot::copyFilesToProperFolder() const
 {
-    //May look for better recourcive way
     QString filePathFrom = tr("D:/screenshot/");
     QString filePathFolder = tr("D:/save/");
     QDir dirFrom(filePathFrom);
@@ -48,15 +47,16 @@ void ScreenShot::copyFilesToProperFolder() const
         QDir dir1("D:/");
         dir1.mkdir("save");
     }
-
-    QString newDir = tr("D:/save/%1").arg(QDate::currentDate().toString());
+    QString str1(QDateTime::currentDateTime().toString());
+    str1.replace(":", "-");
+    QString newDir = tr("D:/save/%1").arg(str1);
     QDir dirTo(newDir);
-
-    //Make a way to save to folder of current time
 
     if (!dirTo.exists()) {
         QDir dir1("D:/save/");
-        dir1.mkdir(QDate::currentDate().toString());
+        QString str(QDateTime::currentDateTime().toString());
+        str.replace(":", "-");
+        dir1.mkdir(str);
     }
 
     dirFrom.setNameFilters(QStringList() << "*.*");
